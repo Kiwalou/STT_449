@@ -4,18 +4,18 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Projectile, function (sprite, ot
     info.changeScoreBy(1)
 })
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Food, function (sprite, otherSprite) {
-    win.destroy(effects.spray, 100)
+    otherSprite.destroy(effects.confetti, 100)
     music.beamUp.play()
     info.changeLifeBy(1)
 })
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite, otherSprite) {
-    otherSprite.destroy(effects.spray, 100)
-    music.bigCrash.play()
+    otherSprite.destroy(effects.fire, 100)
+    music.smallCrash.play()
     info.changeLifeBy(-1)
 })
+let win: Sprite = null
 let projectile: Sprite = null
 let Attaque: Sprite = null
-let win: Sprite = null
 scene.setBackgroundImage(img`
     7777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777
     7777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777
@@ -150,7 +150,7 @@ let mySprite = sprites.create(img`
     . . f f f b f e e f b f f f . . 
     . . f f f 1 f b b f 1 f f f . . 
     . . . f f b b b b b b f f . . . 
-    . . . e e f e e e 3 f e e . . . 
+    . . . e e f e e e e f e e . . . 
     . . e b f b 5 b b 5 b c b e . . 
     . . e e f 5 5 5 5 5 5 f e e . . 
     . . . . c b 5 5 5 5 b c . . . . 
@@ -162,10 +162,10 @@ info.setScore(0)
 info.setLife(3)
 game.onUpdate(function () {
     if (info.score() == 50) {
-        game.showLongText("N50° 45.487 E04° 41.479", DialogLayout.Bottom)
+        game.showLongText("N50° 41.496 E04° 48.533", DialogLayout.Bottom)
     }
 })
-game.onUpdateInterval(2000, function () {
+game.onUpdateInterval(1750, function () {
     Attaque = sprites.createProjectileFromSide(img`
         . . . . . . . . . . . . . . . . 
         . . . . . . 4 4 4 4 . . . . . . 
@@ -186,28 +186,7 @@ game.onUpdateInterval(2000, function () {
         `, randint(-50, 50), randint(-50, 50))
     Attaque.setKind(SpriteKind.Enemy)
 })
-game.onUpdateInterval(60000, function () {
-    win = sprites.createProjectileFromSide(img`
-        . . . . . . . . . . . . . . . . 
-        . . . . . . 6 6 6 6 . . . . . . 
-        . . . . 6 6 6 5 5 6 6 6 . . . . 
-        . . . 7 7 7 7 6 6 6 6 6 6 . . . 
-        . . 6 7 7 7 7 8 8 8 1 1 6 6 . . 
-        . . 7 7 7 7 7 8 8 8 1 1 5 6 . . 
-        . 6 7 7 7 7 8 8 8 8 8 5 5 6 6 . 
-        . 6 7 7 7 8 8 8 6 6 6 6 5 6 6 . 
-        . 6 6 7 7 8 8 6 6 6 6 6 6 6 6 . 
-        . 6 8 7 7 8 8 6 6 6 6 6 6 6 6 . 
-        . . 6 8 7 7 8 6 6 6 6 6 8 6 . . 
-        . . 6 8 8 7 8 8 6 6 6 8 6 6 . . 
-        . . . 6 8 8 8 8 8 8 8 8 6 . . . 
-        . . . . 6 6 8 8 8 8 6 6 . . . . 
-        . . . . . . 6 6 6 6 . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        `, randint(50, -50), randint(50, -50))
-    win.setKind(SpriteKind.Food)
-})
-game.onUpdateInterval(3000, function () {
+game.onUpdateInterval(4000, function () {
     projectile = sprites.createProjectileFromSide(img`
         . . . . . b b b b b b . . . . . 
         . . . b b 9 9 9 9 9 9 b b . . . 
@@ -226,4 +205,26 @@ game.onUpdateInterval(3000, function () {
         . . . b b 5 5 5 5 5 5 b b . . . 
         . . . . . b b b b b b . . . . . 
         `, randint(-50, 50), randint(-50, 50))
+    projectile.setKind(SpriteKind.Projectile)
+})
+game.onUpdateInterval(40000, function () {
+    win = sprites.createProjectileFromSide(img`
+        . . . . . . . . . . . . . . . . 
+        . . . . . . 6 6 6 6 . . . . . . 
+        . . . . 6 6 6 5 5 6 6 6 . . . . 
+        . . . 7 7 7 7 6 6 6 6 6 6 . . . 
+        . . 6 7 7 7 7 8 8 8 1 1 6 6 . . 
+        . . 7 7 7 7 7 8 8 8 1 1 5 6 . . 
+        . 6 7 7 7 7 8 8 8 8 8 5 5 6 6 . 
+        . 6 7 7 7 8 8 8 6 6 6 6 5 6 6 . 
+        . 6 6 7 7 8 8 6 6 6 6 6 6 6 6 . 
+        . 6 8 7 7 8 8 6 6 6 6 6 6 6 6 . 
+        . . 6 8 7 7 8 6 6 6 6 6 8 6 . . 
+        . . 6 8 8 7 8 8 6 6 6 8 6 6 . . 
+        . . . 6 8 8 8 8 8 8 8 8 6 . . . 
+        . . . . 6 6 8 8 8 8 6 6 . . . . 
+        . . . . . . 6 6 6 6 . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        `, randint(-50, 50), randint(-50, 50))
+    win.setKind(SpriteKind.Food)
 })
