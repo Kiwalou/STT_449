@@ -4,12 +4,12 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Projectile, function (sprite, ot
     info.changeScoreBy(1)
 })
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Food, function (sprite, otherSprite) {
-    otherSprite.destroy(effects.confetti, 100)
+    otherSprite.destroy(effects.spray, 100)
     music.beamUp.play()
     info.changeLifeBy(1)
 })
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite, otherSprite) {
-    otherSprite.destroy(effects.fire, 100)
+    otherSprite.destroy(effects.spray, 100)
     music.smallCrash.play()
     info.changeLifeBy(-1)
 })
@@ -162,7 +162,7 @@ info.setScore(0)
 info.setLife(3)
 game.onUpdate(function () {
     if (info.score() == 50) {
-        game.showLongText("N50° 41.496 E04° 48.533", DialogLayout.Bottom)
+        game.showLongText("N50° 37.306 E04° 41.757", DialogLayout.Bottom)
     }
 })
 game.onUpdateInterval(1750, function () {
